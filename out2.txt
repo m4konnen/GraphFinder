@@ -1,0 +1,14 @@
+https://rickandmortyapi.com/graphql
+https://countries.trevorblades.com/api/graphql
+https://countries.trevorblades.com/graphql
+https://countries.trevorblades.com/console/graphql
+https://countries.trevorblades.com/qql
+https://countries.trevorblades.com/graphiql
+https://countries.trevorblades.com/ql
+https://rickandmortyapi.com/graphql
+https://countries.trevorblades.com/graphiql
+https://countries.trevorblades.com/console/graphql
+https://countries.trevorblades.com/qql
+https://countries.trevorblades.com/graphql
+https://countries.trevorblades.com/ql
+https://countries.trevorblades.com/api/graphql
