@@ -122,6 +122,14 @@ func Scan(urllist []string, output string) []string {
 
 	for _, baseUrl := range urllist {
 
+		// fmt.Println(baseUrl[len(baseUrl)-1:])
+
+		if baseUrl[len(baseUrl)-1:] != "/" {
+			baseUrl = baseUrl + "/"
+		}
+
+		// fmt.Println(baseUrl)
+
 		enpoints := []string{
 			"graphql", "qql", "ql", "console/graphql", "graphiql", "api/graphql",
 		}
@@ -130,10 +138,6 @@ func Scan(urllist []string, output string) []string {
 
 			wg.Add(1)
 			semaphore <- true
-
-			if baseUrl[len(baseUrl)-1:] != "/" {
-				baseUrl = baseUrl + "/"
-			}
 
 			rawURL := baseUrl + e
 
