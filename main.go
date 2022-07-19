@@ -131,6 +131,10 @@ func Scan(urllist []string, output string) []string {
 			wg.Add(1)
 			semaphore <- true
 
+			if baseUrl[len(baseUrl)-1:] != "/" {
+				baseUrl = baseUrl + "/"
+			}
+
 			rawURL := baseUrl + e
 
 			go func(rawURL string) {
@@ -262,7 +266,9 @@ func scanIntrospect(list []string, output string) {
 		if res.StatusCode != 404 && strings.Contains(string(resStr), "data") {
 
 			fmt.Println("[+] [INSTROSPECTION ENABLED] - " + urlFinal.String())
-			toOutfile(urlFinal.String()+" - [+] [INSTROSPECTION ENABLED] ", "instrospect-"+output)
+			if output != "" {
+				toOutfile(urlFinal.String()+" - [+] [INSTROSPECTION ENABLED] ", "instrospect-"+output)
+			}
 
 			defer res.Body.Close()
 		}
@@ -272,7 +278,6 @@ func scanIntrospect(list []string, output string) {
 
 func banner() {
 	fmt.Println(`
-	
    ____     ____        _       ____    _   _    _____              _   _    ____  U _____ u   ____     
 U /"___|uU |  _"\ u U  /"\  u U|  _"\ u|'| |'|  |" ___|    ___     | \ |"|  |  _"\ \| ___"|/U |  _"\ u  
 \| |  _ / \| |_) |/  \/ _ \/  \| |_) |/| |_| |\U| |_  u   |_"_|   <|  \| |>/| | | | |  _|"   \| |_) |/  
@@ -280,9 +285,7 @@ U /"___|uU |  _"\ u U  /"\  u U|  _"\ u|'| |'|  |" ___|    ___     | \ |"|  |  _
   \____|   |_| \_\  /_/   \_\  |_|     |_| |_|  |_|      U/| |\u   |_| \_|  |____/ u|_____|   |_| \_\   
   _)(|_    //   \\_  \\    >>  ||>>_   //   \\  )(\\,-.-,_|___|_,-.||   \\,-.|||_   <<   >>   //   \\_  
  (__)__)  (__)  (__)(__)  (__)(__)__) (_") ("_)(__)(_/ \_)-' '-(_/ (_")  (_/(__)_) (__) (__) (__)  (__) 
-
- USAGE: ./GraphFinder -f inputfile.txt -o outputfile.txt
-													
+											
 	`)
 }
 
