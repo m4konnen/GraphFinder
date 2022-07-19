@@ -25,19 +25,23 @@ var (
 
 func check(e error) {
 	if e != nil {
-		fmt.Println("Error")
+		fmt.Println("Error", e)
 		return
 	}
 }
+
+var proxy string = ""
 
 func main() {
 
 	f := flag.String("f", "", "Input File name.")
 	o := flag.String("o", "", "Output File name.")
+	p := flag.String("proxy", "", "Set Proxy (ex: http://localhost:8080)")
 	flag.Parse()
 
 	filename := *f
 	output := *o
+	proxy = *p
 
 	banner()
 
@@ -92,17 +96,22 @@ func Scan(urllist []string, output string) []string {
 
 	found := make([]string, 0)
 
-	proxyString := "http://localhost:8080"
-	proxyURL, _ := url.Parse(proxyString)
+	proxyString := setProxy()
 
 	transport := &http.Transport{
-		Proxy: http.ProxyURL(proxyURL),
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true,
-			MinVersion: tls.VersionTLS11,
-			MaxVersion: tls.VersionTLS11},
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+			MinVersion:         tls.VersionTLS10,
+			MaxVersion:         tls.VersionTLS13,
+		},
 		MaxIdleConns:        concurrency,
 		MaxIdleConnsPerHost: concurrency,
 		MaxConnsPerHost:     concurrency,
+	}
+
+	if proxyString != "" {
+		proxyURL, _ := url.Parse(proxyString)
+		transport.Proxy = http.ProxyURL(proxyURL)
 	}
 
 	client := &http.Client{
@@ -208,17 +217,21 @@ func toOutfile(url, out string) {
 
 func scanIntrospect(list []string, output string) {
 
-	proxyString := "http://localhost:8080"
-	proxyURL, _ := url.Parse(proxyString)
+	proxyString := setProxy()
 
 	transport := &http.Transport{
-		Proxy: http.ProxyURL(proxyURL),
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true,
-			MinVersion: tls.VersionTLS11,
-			MaxVersion: tls.VersionTLS11},
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: true,
+			MinVersion:         tls.VersionTLS11,
+			MaxVersion:         tls.VersionTLS13},
 		MaxIdleConns:        concurrency,
 		MaxIdleConnsPerHost: concurrency,
 		MaxConnsPerHost:     concurrency,
+	}
+
+	if proxyString != "" {
+		proxyURL, _ := url.Parse(proxyString)
+		transport.Proxy = http.ProxyURL(proxyURL)
 	}
 
 	client := &http.Client{
@@ -271,4 +284,8 @@ U /"___|uU |  _"\ u U  /"\  u U|  _"\ u|'| |'|  |" ___|    ___     | \ |"|  |  _
  USAGE: ./GraphFinder -f inputfile.txt -o outputfile.txt
 													
 	`)
+}
+
+func setProxy() string {
+	return proxy
 }
