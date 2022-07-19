@@ -3,7 +3,13 @@
 - This is just a tool to search for GraphQL endpoints. It also check if introspection is enabled.
 
 
-### Obs
+### Installation
+```
+go install -v github.com/m4konnen/graphFinder@latest
+```
+
+
+### Notes
 - This is my first goolang tool, you may find a lot of bugs.
 - I know I should change/add criterias to confirm the GraphQL existence.
 - I'll appreciate any hints about the code or the tool.
