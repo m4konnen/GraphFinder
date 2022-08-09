@@ -269,9 +269,9 @@ func scanIntrospect(list []string, output string) {
 
 		if res.StatusCode != 404 && strings.Contains(string(resStr), "data") {
 
-			fmt.Println("[+] [INSTROSPECTION ENABLED] - " + urlFinal.String())
+			fmt.Println("[+] [INTROSPECTION ENABLED] - " + urlFinal.String())
 			if output != "" {
-				toOutfile(urlFinal.String()+" - [+] [INSTROSPECTION ENABLED] ", "instrospect-"+output)
+				toOutfile(urlFinal.String()+" - [+] [INTROSPECTION ENABLED] ", "instrospect-"+output)
 			}
 
 			defer res.Body.Close()
